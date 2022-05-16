@@ -5,6 +5,8 @@ import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 import * as dat from "lil-gui";
 
+// this lesson just teaches you how to take a site live
+
 /**
  * Base
  */
