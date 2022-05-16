@@ -39,6 +39,7 @@ fontLoader.load("/fonts/helvetiker_regular.typeface.json", (font) => {
   const textGeometry = new TextGeometry("Hello World!", {
     font: font,
     size: 0.5,
+    // height is thickness of the text
     height: 0.25,
     // lower the curveSegments for fewer triangles
     curveSegments: 5,
