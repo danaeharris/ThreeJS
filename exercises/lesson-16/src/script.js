@@ -5,7 +5,7 @@ import * as dat from "lil-gui";
 
 // load our textures
 const textureLoader = new THREE.TextureLoader();
-const bakedShadow = textureLoader.load("/textures/bakedShadow.jpg");
+// const bakedShadow = textureLoader.load("/textures/bakedShadow.jpg");
 const simpleShadow = textureLoader.load("/textures/simpleShadow.jpg");
 /**
  * Base
@@ -40,7 +40,9 @@ directionalLight.shadow.camera.top = 2;
 directionalLight.shadow.camera.right = 2;
 directionalLight.shadow.camera.bottom = -2;
 directionalLight.shadow.camera.left = -2;
-directionalLight.shadow.radius = 10;
+
+// changing the shadow.radius will cause a general blur to the shadow, and it will not take into account which parts should be sharp and which parts should be blurred
+// directionalLight.shadow.radius = 10;
 
 gui.add(directionalLight, "intensity").min(0).max(1).step(0.001);
 gui.add(directionalLight.position, "x").min(-5).max(5).step(0.001);
@@ -51,7 +53,7 @@ scene.add(directionalLight);
 
 // spotlight
 const spotlight = new THREE.SpotLight(0xffffff, 0.3, 10, Math.PI * 0.3);
-spotlight.castShadow = true;
+spotlight.castShadow = false;
 spotlight.position.set(0, 2, 2);
 
 spotlight.shadow.mapSize.width = 1024;
@@ -119,7 +121,7 @@ sphereShadow.position.y = plane.position.y + 0.01;
 scene.add(sphere, sphereShadow, plane);
 
 // Tell the lights to cast shadows
-directionalLight.castShadow = true;
+directionalLight.castShadow = false;
 
 // optimize the shadows
 directionalLight.shadow.mapSize.width = 1024;
@@ -127,6 +129,7 @@ directionalLight.shadow.mapSize.height = 1024;
 
 // Near and far
 // add a camera helper to help us find the right near and far values.
+// the camera helper will show us an outline of the camera's view
 const directionalLightCameraHelper = new THREE.CameraHelper(
   directionalLight.shadow.camera
 );
@@ -135,7 +138,7 @@ const directionalLightCameraHelper = new THREE.CameraHelper(
 
 // point light
 const pointLight = new THREE.PointLight(0xffffff, 0.3);
-pointLight.castShadow = true;
+pointLight.castShadow = false;
 pointLight.position.set(-1, 1, 0);
 
 // add the map size (how big the picture we make our shadows from is)
@@ -201,8 +204,6 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-// enable shadow maps on the renderer
-renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 // un-enable the shadow map
@@ -219,7 +220,7 @@ const tick = () => {
   // update the sphere's position
   sphere.position.x = Math.cos(elapsedTime) * 1.5;
   sphere.position.z = Math.sin(elapsedTime) * 1.5;
-  // make it bounce 
+  // make it bounce
   // (use Math.abs() to make the number always positive)
   sphere.position.y = Math.abs(Math.sin(elapsedTime * 3));
 
